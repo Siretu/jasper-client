@@ -122,8 +122,16 @@ class PocketSphinxSTT(AbstractSTTEngine):
                                  "hmm_dir in your profile.",
                                  hmm_dir, ', '.join(missing_hmm_files))
 
-        self._decoder = ps.Decoder(hmm=hmm_dir, logfn=self._logfile,
-                                   **vocabulary.decoder_kwargs)
+        # Removed to fix hmm error: https://groups.google.com/forum/#!topic/jasper-support-forum/VTod74fdzSM
+        #self._decoder = ps.Decoder(hmm=hmm_dir, logfn=self._logfile, **vocabulary.decoder_kwargs)
+            
+        psConfig = ps.Decoder.default_config() 
+        psConfig.set_string('-hmm', hmm_dir)
+
+        psConfig.set_string('-lm', vocabulary.decoder_kwargs['lm']) 
+        psConfig.set_string('-dict', vocabulary.decoder_kwargs['dict']) 
+        self._decoder = ps.Decoder(psConfig)
+
 
     def __del__(self):
         os.remove(self._logfile)
@@ -163,13 +171,18 @@ class PocketSphinxSTT(AbstractSTTEngine):
         self._decoder.process_raw(data, False, True)
         self._decoder.end_utt()
 
-        result = self._decoder.get_hyp()
+        # Changed to fix hmm
+        result = self._decoder.hyp()
         with open(self._logfile, 'r+') as f:
             for line in f:
                 self._logger.debug(line.strip())
             f.truncate()
 
-        transcribed = [result[0]]
+        # Changed to fix hmm
+        if result is None:
+            transcribed = ['']
+        else:
+            transcribed = [result.hypstr]
         self._logger.info('Transcribed: %r', transcribed)
         return transcribed
 
