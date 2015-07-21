@@ -101,6 +101,8 @@ class Jasper(object):
                            "to '%s'", tts_engine_slug)
         tts_engine_class = tts.get_engine_by_slug(tts_engine_slug)
 
+        print stt_passive_engine_class
+        print stt_engine_class
         # Initialize Mic
         self.mic = Mic(tts_engine_class.get_instance(),
                        stt_passive_engine_class.get_passive_instance(),
