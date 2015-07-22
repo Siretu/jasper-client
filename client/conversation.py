@@ -20,6 +20,7 @@ class Conversation(object):
         """
         self._logger.info("Starting to handle conversation with keyword '%s'.",
                           self.persona)
+        frames = []
         while True:
             # Print notifications until empty
             notifications = self.notifier.getAllNotifications()
@@ -28,13 +29,16 @@ class Conversation(object):
 
             self._logger.debug("Started listening for keyword '%s'",
                                self.persona)
-            threshold, transcribed = self.mic.passiveListen(self.persona)
+            threshold, transcribed, frames = self.mic.passiveListen(self.persona, frames)
+            print len(frames)
             self._logger.debug("Stopped listening for keyword '%s'",
                                self.persona)
 
             if not transcribed or not threshold:
                 self._logger.info("Nothing has been said or transcribed.")
+                
                 continue
+            frames = []
             self._logger.info("Keyword '%s' has been said!", self.persona)
 
             self._logger.debug("Started to listen actively with threshold: %r",

@@ -86,7 +86,7 @@ class Mic:
 
         return THRESHOLD
 
-    def passiveListen(self, PERSONA):
+    def passiveListen(self, PERSONA, frames=None):
         """
         Listens for PERSONA in everyday sound. Times out after LISTEN_TIME, so
         needs to be restarted.
@@ -110,7 +110,11 @@ class Mic:
                                   frames_per_buffer=CHUNK)
 
         # stores the audio data
-        frames = []
+        orig_frames = 0
+        if not frames:
+            frames = []
+        else:
+            orig_frames = len(frames)
 
         # stores the lastN score values
         lastN = [i for i in range(30)]
@@ -130,7 +134,7 @@ class Mic:
         THRESHOLD = average * THRESHOLD_MULTIPLIER
 
         # save some memory for sound data
-        frames = []
+        #frames = []
 
         # flag raised when sound disturbance detected
         didDetect = False
@@ -151,10 +155,10 @@ class Mic:
             print "No disturbance detected"
             stream.stop_stream()
             stream.close()
-            return (None, None)
+            return (None, None, frames[orig_frames:])
 
         # cutoff any recording before this disturbance was detected
-        frames = frames[-20:]
+        #frames = frames[-10:]
 
         # otherwise, let's keep recording for few seconds and save the file
         DELAY_MULTIPLIER = 1
@@ -181,9 +185,9 @@ class Mic:
         print "Got transcribed: %s" % str(transcribed)
         print PERSONA
         if any(PERSONA in phrase for phrase in transcribed):
-            return (THRESHOLD, PERSONA)
+            return (THRESHOLD, PERSONA, frames[orig_frames:])
 
-        return (False, transcribed)
+        return (False, transcribed, frames[orig_frames:])
 
     def activeListen(self, THRESHOLD=None, LISTEN=True, MUSIC=False):
         """
