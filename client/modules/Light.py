@@ -23,9 +23,9 @@ def handle(text, mic, profile):
     if "default" in text:
         sock.send("default")
     else:
-        if "on" in text and status == b"False":
+        if "on" in text:
             sock.send("on")
-        elif "off" in text and status == b"True":
+        elif "off" in text:
             sock.send("off")
 
 
