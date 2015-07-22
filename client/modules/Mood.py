@@ -19,9 +19,8 @@ def handle(text, mic, profile):
                    number)
     """
     tn = telnetlib.Telnet("localhost",6602)
-    tn.write("play 3\n")
-    mic.say("Welcome back Jessie")
-    #mic.say("Setting the mood")
+    tn.write("play 1\n")
+    mic.say("Setting the mood")
 
     sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     sock.connect(("localhost",5432))
