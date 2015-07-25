@@ -7,7 +7,7 @@ WORDS = []
 PRIORITY = -(maxint + 1)
 
 
-def handle(text, mic, profile):
+def handle(text, mic, profile, data):
     """
         Reports that the user has unclear or unusable input.
 

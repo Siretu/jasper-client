@@ -56,7 +56,7 @@ class Brain(object):
                      else 0, reverse=True)
         return modules
 
-    def query(self, texts):
+    def query(self, texts, data):
         """
         Passes user input to the appropriate module, testing it against
         each candidate module's isValid function.
@@ -70,7 +70,8 @@ class Brain(object):
                     self._logger.debug("'%s' is a valid phrase for module " +
                                        "'%s'", text, module.__name__)
                     try:
-                        module.handle(text, self.mic, self.profile)
+                        print "Executing: %s" % module.__name__
+                        module.handle(text, self.mic, self.profile, data)
                     except:
                         self._logger.error('Failed to execute module',
                                            exc_info=True)

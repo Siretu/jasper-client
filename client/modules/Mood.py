@@ -7,7 +7,7 @@ import socket
 WORDS = ["SET", "THE", "MOOD"]
 
 
-def handle(text, mic, profile):
+def handle(text, mic, profile, data=None):
     """
         Responds to user-input, typically speech text, by relaying the
         meaning of life.

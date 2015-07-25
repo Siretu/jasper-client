@@ -43,11 +43,11 @@ class Conversation(object):
 
             self._logger.debug("Started to listen actively with threshold: %r",
                                threshold)
-            input = self.mic.activeListenToAllOptions(threshold)
+            input, data = self.mic.activeListenToAllOptions(threshold)
             self._logger.debug("Stopped to listen actively with threshold: %r",
                                threshold)
 
             if input:
-                self.brain.query(input)
+                self.brain.query(input, data)
             else:
                 self.mic.say("Pardon?")

@@ -4,7 +4,7 @@ import socket
 WORDS = ["TURN", "ON", "THE", "LIGHTS", "LIGHT", "OFF", "DEFAULT", "SET", "TO"]
 
 
-def handle(text, mic, profile):
+def handle(text, mic, profile, data=None):
     """
         Responds to user-input, typically speech text, by relaying the
         meaning of life.
@@ -15,18 +15,22 @@ def handle(text, mic, profile):
         profile -- contains information related to the user (e.g., phone
                    number)
     """
+    print "Handling lights"
     text = text.lower()
     sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     sock.connect(("localhost",5432))
-    status = sock.recv(1024)
-    print "Got status: " + status
+    print "Socket connected"
+    #status = sock.recv(1024)
+    #print "Got status: " + status
     if "default" in text:
         sock.send("default")
     else:
+        print "Sending message"
         if "on" in text:
             sock.send("on")
         elif "off" in text:
             sock.send("off")
+        print "Sent message"
 
 
 def isValid(text):

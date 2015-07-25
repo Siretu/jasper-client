@@ -331,7 +331,7 @@ class PocketsphinxVocabulary(AbstractVocabulary):
                     f.write(line)
 
 
-class JuliusVocabulary(AbstractVocabulary):
+class JuliusVocabulary():
     class VoxForgeLexicon(object):
         def __init__(self, fname, membername=None):
             self._dict = {}
@@ -375,7 +375,7 @@ class JuliusVocabulary(AbstractVocabulary):
     def dfa_file(self):
         """
         Returns:
-            The path of the the julius dfa file as string
+                 The path of the the julius dfa file as string
         """
         return os.path.join(self.path, 'dfa')
 
@@ -543,6 +543,7 @@ if __name__ == '__main__':
     for subclass in AbstractVocabulary.__subclasses__():
         if hasattr(subclass, 'PATH_PREFIX'):
             vocab = subclass(path=base_dir)
+            print("Name: ", subclass.__name__)
             print("Vocabulary in:     %s" % vocab.path)
             print("Revision file:     %s" % vocab.revision_file)
             print("Compiled revision: %s" % vocab.compiled_revision)

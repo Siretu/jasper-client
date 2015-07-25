@@ -605,7 +605,10 @@ class WitAiSTT(AbstractSTTEngine):
                           headers=self.headers)
         try:
             r.raise_for_status()
+            print r.json()
             text = r.json()['_text']
+            if text and r.json()["outcomes"]:
+                text = text + " " + r.json()["outcomes"][0]["intent"].replace("_"," ").upper()
         except requests.exceptions.HTTPError:
             self._logger.critical('Request failed with response: %r',
                                   r.text,
@@ -627,7 +630,7 @@ class WitAiSTT(AbstractSTTEngine):
             if text:
                 transcribed.append(text.upper())
             self._logger.info('Transcribed: %r', transcribed)
-            return transcribed
+            return transcribed, r.json()
 
     @classmethod
     def is_available(cls):
