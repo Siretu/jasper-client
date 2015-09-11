@@ -23,7 +23,7 @@ def handle(text, mic, profile, data=None):
         tn.write("stop\n")
     else:
         print "Starting playlist"
-        tn.write("play 2\n")
+        tn.write("play 3\n")
     
 
 
