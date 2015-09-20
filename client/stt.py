@@ -613,18 +613,18 @@ class WitAiSTT(AbstractSTTEngine):
             self._logger.critical('Request failed with response: %r',
                                   r.text,
                                   exc_info=True)
-            return []
+            return [],{}
         except requests.exceptions.RequestException:
             self._logger.critical('Request failed.', exc_info=True)
-            return []
+            return [],{}
         except ValueError as e:
             self._logger.critical('Cannot parse response: %s',
                                   e.args[0])
-            return []
+            return [],{}
         except KeyError:
             self._logger.critical('Cannot parse response.',
                                   exc_info=True)
-            return []
+            return [],{}
         else:
             transcribed = []
             if text:
