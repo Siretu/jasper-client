@@ -27,11 +27,13 @@ def handle(text, mic, profile, data=None):
     else:
         print "Sending message"
         if "on" in text:
-            mic.say("On")
             sock.send("on")
+            sock.close()
+            mic.say("On")
         elif "off" in text:
-            mic.say("Off")
             sock.send("off")
+            sock.close()
+            mic.say("Off")
         print "Sent message"
 
 
