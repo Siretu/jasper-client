@@ -33,6 +33,7 @@ def handle(text, mic, profile, data=None):
             volume = 100
         elif value == "mute":
             volume = 0
+    mic.say("Changing volume")
     cmd = "amixer set Master {0}%{1}".format(volume,relative)
     os.system(cmd)
 
