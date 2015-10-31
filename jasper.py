@@ -23,6 +23,7 @@ parser.add_argument('--no-network-check', action='store_true',
 parser.add_argument('--diagnose', action='store_true',
                     help='Run diagnose and exit')
 parser.add_argument('--debug', action='store_true', help='Show debug messages')
+parser.add_argument('--silent-start', action='store_true', help="Don't say initial start message")
 args = parser.parse_args()
 
 if args.local:
@@ -108,13 +109,14 @@ class Jasper(object):
                        stt_passive_engine_class.get_passive_instance(),
                        stt_engine_class.get_active_instance())
 
-    def run(self):
+    def run(self, silent):
         if 'first_name' in self.config:
             salutation = ("How can I be of service, %s?"
                           % self.config["first_name"])
         else:
             salutation = "How can I be of service?"
-        self.mic.say(salutation)
+        if not silent:
+            self.mic.say(salutation)
 
         conversation = Conversation("JASPER", self.mic, self.config)
         conversation.handleForever()
@@ -147,4 +149,4 @@ if __name__ == "__main__":
         logger.error("Error occured!", exc_info=True)
         sys.exit(1)
 
-    app.run()
+    app.run(args.silent_start)
